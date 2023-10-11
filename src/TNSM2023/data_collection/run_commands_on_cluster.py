@@ -91,3 +91,21 @@ class RunCommandsOnCluster:
                     line = line.replace(line, "      weight: " + str(100 - self.routing_action)) + "\n"
                     counter += 1
             sys.stdout.write(line)
+
+    def run_routing_action(self) -> int:
+        '''
+        This function runs the routing action on the cluster
+        :return: 0 if there is no error, 1 if an error happens
+        '''
+        command = "kubectl apply -f " + self.configurations_path + self.routing_action
+
+        # Use subprocess to run the command
+        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Check the result
+        if result.returncode == 0:
+            logging.info(result.stdout)
+            return 0
+        else:
+            logging.info(result.stderr)
+            return 1
