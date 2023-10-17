@@ -2,6 +2,7 @@ import logging
 import fileinput
 import sys
 import subprocess
+import requests
 
 class RunCommandsOnCluster:
     """
@@ -16,6 +17,7 @@ class RunCommandsOnCluster:
         self.scaling_file = "scaling.yaml"
         self.routing_action = 50
         self.scaling_action = 1000
+        self.blocking_action = 0
 
     def set_routing_action(self, routing_action: int) -> None:
         '''
@@ -47,6 +49,21 @@ class RunCommandsOnCluster:
         :return: scaling action
         '''
         return self.scaling_action
+
+    def set_blocking_action(self, blocking_action: int) -> None:
+        '''
+        This function sets the scaling action
+        :param blocking_action: The blocking rate
+        :return: None
+        '''
+        self.blocking_action = blocking_action
+
+    def get_blocking_action(self) -> int:
+        '''
+        This funtion returns the blocking action
+        :return: blocking action
+        '''
+        return self.blocking_action
 
     def revise_scaling_action(self) -> None:
         '''
@@ -109,3 +126,12 @@ class RunCommandsOnCluster:
         else:
             logging.info(result.stderr)
             return 1
+
+    def run_blocking_action(self, IP_port, service_name) -> int:
+        '''
+        This function runs the blocking action on the cluster
+        :return: the returned code of the response
+        '''
+        r = requests.get('http://' + IP_port + '/' + service_name +'/' + str(self.blocking_action))
+        return int(r)
+
