@@ -18,7 +18,7 @@ class DataCollection:
         self.services = services
         line = ""
         for i in range(len(self.services)):
-            line = ("l" + str(i) + ",cl" + str(i) + ",p" + str(i) + ",b" + str(i) + ",c" + str(i) + ",d" + str(i) +
+            line = ("max_l" + str(i) + "l" + str(i) + ",cl" + str(i) + ",p" + str(i) + ",b" + str(i) + ",c" + str(i) + ",d" + str(i) +
                     ",d" + str(i) + "_std,d" + str(i) + "1,d" + str(i) + "1_std,d" + str(i) + "2,d" + str(i) +
                     "2_std,drop," + str(i) + "\n")
         with open(self.path_to_save_data, "w") as file:
@@ -26,6 +26,12 @@ class DataCollection:
         file.close()
 
     def run_load_generator(self, LG_name:str, load_value:float) -> None:
+        '''
+        This function starts the asyn load genrator with the constant load pattern and the given load value
+        :param LG_name:
+        :param load_value:
+        :return:
+        '''
         # Define the shell command to run
         shell_cmd = "nohup python " + self.path_to_LG + "async_load_generator.py " + LG_name + " constant " + str(
             load_value) + " " + self.IP_port + " > /dev/null &"
@@ -145,8 +151,6 @@ class DataCollection:
         includes p, b, c
         :return: None
         '''
-        self.apply_service_config()
-        time.sleep(self.settling_time)
         with open(self.path_to_save_data, "a") as file:
             for i in range(n):
                 self.cleanup_files(self.services)
@@ -155,7 +159,8 @@ class DataCollection:
                 statistics = self.read_stats(self.services)
                 line = ""
                 for i in range(len(self.services)):
-                    line = (str(offered_loads[i]) + "," + str(statistics[i]["cl"]) + "," + str(self.services[i]["p"])
+                    line = (str(self.services[i]["max_l"]) + "," + str(offered_loads[i]) + "," + str(statistics[i]["cl"])
+                            + "," + str(self.services[i]["p"])
                             + "," + str(self.services[i]["b"]) + "," + str(self.services[i]["c"]) + "," +
                             str(statistics[i]["d"]) + "," +  str(statistics[i]["d_std"]) + "," + str(statistics[i]["d1"])
                             + "," + str(statistics[i]["d1_std"]) + "," + str(statistics[i]["d2"]) + "," +
@@ -182,3 +187,8 @@ class DataCollection:
             command_runner.revise_scaling_action()
             command_runner.run_scaling_action()
             command_runner.run_blocking_action(self.IP_port, service["name"])
+
+    def data_collectio(self) -> None:
+        self.apply_service_config()
+        time.sleep(self.settling_time)
+        self.collect_samples(10)
