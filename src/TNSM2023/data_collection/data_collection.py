@@ -8,7 +8,7 @@ from TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluste
 
 class DataCollection:
     def __init__(self, IP_port:str, path_to_save_data:str, path_to_artifacts:str, path_to_LG:str, services:List[Dict],
-                 time_step:int = 5, settling_time = 20) -> None:
+                 time_step:int = 5, settling_time = 20, n:int = 5) -> None:
         self.IP_port = IP_port
         self.artifacts = path_to_artifacts
         self.time_step = time_step
@@ -16,6 +16,7 @@ class DataCollection:
         self.path_to_save_data = path_to_save_data
         self.path_to_LG = path_to_LG
         self.services = services
+        self.n = n
         line = ""
         for i in range(len(self.services)):
             line = ("max_l" + str(i) + "l" + str(i) + ",cl" + str(i) + ",p" + str(i) + ",b" + str(i) + ",c" + str(i) + ",d" + str(i) +
@@ -143,7 +144,7 @@ class DataCollection:
             service_statics.append(statics)
         return service_statics
 
-    def collect_samples(self, n:int)  -> None:
+    def collect_samples(self)  -> None:
         '''
         This funtion collect n sample from the testbed for the given service and configration of that service
         :param n: Number of samples
@@ -152,7 +153,7 @@ class DataCollection:
         :return: None
         '''
         with open(self.path_to_save_data, "a") as file:
-            for i in range(n):
+            for i in range(self.n):
                 self.cleanup_files(self.services)
                 time.sleep(self.time_step)
                 offered_loads = self.read_loads(self.services)
@@ -191,4 +192,4 @@ class DataCollection:
     def data_collectio(self) -> None:
         self.apply_service_config()
         time.sleep(self.settling_time)
-        self.collect_samples(10)
+        self.collect_samples()
