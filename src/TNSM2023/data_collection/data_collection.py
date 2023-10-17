@@ -1,11 +1,6 @@
-import random
 import numpy as np
-import joblib
-import paramiko
 import subprocess
 import time
-import requests
-import sys
 import os
 from pathlib import Path
 from typing import List, Dict
@@ -13,10 +8,11 @@ from TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluste
 
 class DataCollection:
     def __init__(self, IP_port:str, path_to_save_data:str, path_to_artifacts:str, path_to_LG:str, services:List[Dict],
-                 time_step:int = 5) -> None:
+                 time_step:int = 5, settling_time = 20) -> None:
         self.IP_port = IP_port
         self.artifacts = path_to_artifacts
         self.time_step = time_step
+        self.settling_time = settling_time
         self.path_to_save_data = path_to_save_data
         self.path_to_LG = path_to_LG
         self.services = services
@@ -149,6 +145,8 @@ class DataCollection:
         includes p, b, c
         :return: None
         '''
+        self.apply_service_config()
+        time.sleep(self.settling_time)
         with open(self.path_to_save_data, "a") as file:
             for i in range(n):
                 self.cleanup_files(self.services)
