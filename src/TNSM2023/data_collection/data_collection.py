@@ -8,7 +8,7 @@ from TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluste
 
 class DataCollection:
     def __init__(self, IP_port:str, data_file_name:str, path_to_artifacts:str, path_to_LG:str, path_to_config_files:str,
-                 services:List[Dict], time_step:int = 5, settling_time = 20, n:int = 5) -> None:
+                 services:List[Dict], time_step:int = 5, settling_time = 5, n:int = 5) -> None:
         self.IP_port = IP_port
         self.artifacts = path_to_artifacts
         self.path_to_config_files = path_to_config_files
@@ -22,7 +22,7 @@ class DataCollection:
         for i in range(1,len(self.services)+1):
             line = ("max_l" + str(i) + ",l" + str(i) + ",cl" + str(i) + ",p" + str(i) + ",b" + str(i) + ",c" + str(i) + ",d" + str(i) +
                     ",d" + str(i) + "_std,d" + str(i) + "1,d" + str(i) + "1_std,d" + str(i) + "2,d" + str(i) +
-                    "2_std,drop," + str(i) + "\n")
+                    "2_std,drop" + str(i) + "\n")
         with open(self.artifacts + self.data_file_name, "w") as file:
             file.write(line)
         file.close()

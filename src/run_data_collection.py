@@ -51,6 +51,7 @@ if __name__ == "__main__":
                     service["p"] = p * 100
                     for b in routing_blocking:
                         service["b"] = int(math.ceil((1-b) * service["l"]))
+                        data_collection.set_services(services=[service])
                         data_collection.data_collection()
             data_collection.kill_load_generator()
 
