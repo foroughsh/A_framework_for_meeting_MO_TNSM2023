@@ -133,7 +133,7 @@ class RunCommandsOnCluster:
         This function runs the blocking action on the cluster
         :return: the returned code of the response
         '''
-        r = requests.get('http://' + IP_port + '/' + service_name +'/' + str(self.blocking_action))
+        r = requests.get('http://' + IP_port + '/rate' + service_name +'/' + str(self.blocking_action))
         return r
 
 # test = RunCommandsOnCluster(sys.argv[1])
