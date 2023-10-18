@@ -88,7 +88,7 @@ class DataCollection:
     def read_stats(self, services: List[Dict]) -> List[Dict]:
         service_statics = []
         for service_names in services:
-            with open(self.artifacts + "response_" + service_names["name"] + ".txt","w") as file:
+            with open(self.artifacts + "response_" + service_names["name"] + ".txt","r") as file:
                 lines = file.readlines()
             file.close()
             responses_from_node_1 = []
