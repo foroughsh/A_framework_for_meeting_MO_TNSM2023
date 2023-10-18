@@ -9,8 +9,6 @@ import sys
 ################################Load generation methods################################
 np.random.seed(0)
 
-path_to_artifacts = "./artifacts/"
-
 def constant(load):
     T = 7000
     delays = []
@@ -118,6 +116,8 @@ service_name = args[1]
 load_pattern = args[2]
 
 IP_port = args[4]
+
+path_to_artifacts = args[5]
 
 if service_name == "compute":
     url = "http://"+IP_port+"/compute"

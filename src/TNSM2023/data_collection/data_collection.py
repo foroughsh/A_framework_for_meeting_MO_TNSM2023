@@ -19,8 +19,8 @@ class DataCollection:
         self.services = services
         self.n = n
         line = ""
-        for i in range(len(self.services)):
-            line = ("max_l" + str(i) + "l" + str(i) + ",cl" + str(i) + ",p" + str(i) + ",b" + str(i) + ",c" + str(i) + ",d" + str(i) +
+        for i in range(1,len(self.services)+1):
+            line = ("max_l" + str(i) + ",l" + str(i) + ",cl" + str(i) + ",p" + str(i) + ",b" + str(i) + ",c" + str(i) + ",d" + str(i) +
                     ",d" + str(i) + "_std,d" + str(i) + "1,d" + str(i) + "1_std,d" + str(i) + "2,d" + str(i) +
                     "2_std,drop," + str(i) + "\n")
         with open(self.artifacts + self.data_file_name, "w") as file:
@@ -36,7 +36,7 @@ class DataCollection:
         '''
         # Define the shell command to run
         shell_cmd = "nohup python " + self.path_to_LG + "async_load_generator.py " + LG_name + " constant " + str(
-            load_value) + " " + self.IP_port + " > /dev/null &"
+            load_value) + " " + self.IP_port + " " + self.artifacts + " > /dev/null &"
 
         # Run the command in the background
         subprocess.Popen(shell_cmd, shell=True)
@@ -57,27 +57,28 @@ class DataCollection:
             load_pattern.append(float(line))
         return load_pattern
 
-    def cleanup_files(self, service) -> None:
-        path = Path(self.artifacts + "load_" + service + ".txt")
-        if (path.is_file()):
-            os.remove(self.artifacts  + "load_" + service + ".txt")
-        path = Path(self.artifacts  + "response_" + service + ".txt")
-        if (path.is_file()):
-            os.remove(self.artifacts  + "response_" + service + ".txt")
+    def cleanup_files(self, services: List[Dict]) -> None:
+        for service in services:
+            path = Path(self.artifacts + "load_" + service["name"] + ".txt")
+            if (path.is_file()):
+                os.remove(self.artifacts  + "load_" + service["name"] + ".txt")
+            path = Path(self.artifacts  + "response_" + service["name"] + ".txt")
+            if (path.is_file()):
+                os.remove(self.artifacts  + "response_" + service["name"] + ".txt")
 
-    def clean_file_contents(self, services: List[str]) -> None:
-        for service_names in services:
-            with open("load_" + service_names + ".txt","w") as file:
+    def clean_file_contents(self, services: List[Dict]) -> None:
+        for service in services:
+            with open(self.artifacts + "load_" + service["name"] + ".txt","w") as file:
                 file.write("")
             file.close()
-            with open("response_" + service_names + ".txt","w") as file:
+            with open(self.artifacts + "response_" + service["name"] + ".txt","w") as file:
                 file.write("")
             file.close()
 
     def read_loads(self, services: List[Dict]) -> List[int]:
         offeted_loads = []
         for service_names in services:
-            with open("load_" + service_names["name"] + ".txt","r") as file:
+            with open(self.artifacts + "load_" + service_names["name"] + ".txt","r") as file:
                 lines = file.readlines()
             file.close()
             offeted_loads.append(len(lines))
@@ -87,7 +88,7 @@ class DataCollection:
     def read_stats(self, services: List[Dict]) -> List[Dict]:
         service_statics = []
         for service_names in services:
-            with open("response_" + service_names["name"] + ".txt","w") as file:
+            with open(self.artifacts + "response_" + service_names["name"] + ".txt","w") as file:
                 lines = file.readlines()
             file.close()
             responses_from_node_1 = []
@@ -153,7 +154,7 @@ class DataCollection:
         includes p, b, c
         :return: None
         '''
-        with open(self.path_to_save_data, "a") as file:
+        with open(self.artifacts + self.data_file_name, "a") as file:
             for i in range(self.n):
                 self.cleanup_files(self.services)
                 time.sleep(self.time_step)

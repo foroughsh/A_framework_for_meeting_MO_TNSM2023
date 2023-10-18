@@ -1,5 +1,7 @@
 import sys
 import argparse
+import time
+
 import math
 from TNSM2023.data_collection.data_collection import DataCollection
 
@@ -29,24 +31,28 @@ if __name__ == "__main__":
         service["l"] = 1
         service["p"]=20
         service["b"]=int(math.ceil((1-0.2) * service["l"]))
-        service["c"]=1000
+        service["c"]=1
         services = [service]
 
         data_collection = DataCollection(IP_port=IP_port, data_file_name=path_to_data_file,
-                                         path_to_artifacts=path_to_artifacts, path_to_LG=path_to_LG, services=services)
+                                         path_to_artifacts=path_to_artifacts, path_to_LG=path_to_LG,
+                                         path_to_config_files=path_to_config_files, services=services)
 
         load_cpu = range(1,6)
         routing_blocking = [0, 0.2, 0.4, 0.6, 0.8, 1]
+        data_collection.kill_load_generator()
+        time.sleep(5)
         for l in load_cpu:
             service["l"] = l
             data_collection.run_load_generator(service["name"], service["l"])
             for c in load_cpu:
-                service["c"] = c * 1000
+                service["c"] = c
                 for p in routing_blocking:
                     service["p"] = p * 100
                     for b in routing_blocking:
                         service["b"] = int(math.ceil((1-b) * service["l"]))
                         data_collection.data_collection()
+            data_collection.kill_load_generator()
 
     else:
         print(

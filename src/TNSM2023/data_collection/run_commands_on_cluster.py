@@ -115,7 +115,7 @@ class RunCommandsOnCluster:
         This function runs the routing action on the cluster
         :return: 0 if there is no error, 1 if an error happens
         '''
-        command = "kubectl apply -f " + self.configurations_path + self.routing_action
+        command = "kubectl apply -f " + self.configurations_path + self.routing_file
 
         # Use subprocess to run the command
         result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -128,11 +128,15 @@ class RunCommandsOnCluster:
             logging.info(result.stderr)
             return 1
 
-    def run_blocking_action(self, IP_port, service_name) -> int:
+    def run_blocking_action(self, IP_port, service_name) -> str:
         '''
         This function runs the blocking action on the cluster
         :return: the returned code of the response
         '''
         r = requests.get('http://' + IP_port + '/' + service_name +'/' + str(self.blocking_action))
-        return int(r)
+        return r
 
+# test = RunCommandsOnCluster(sys.argv[1])
+# test.set_scaling_action(1)
+# test.revise_scaling_action()
+# test.run_scaling_action()
