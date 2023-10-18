@@ -7,13 +7,14 @@ from typing import List, Dict
 from TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluster
 
 class DataCollection:
-    def __init__(self, IP_port:str, path_to_save_data:str, path_to_artifacts:str, path_to_LG:str, services:List[Dict],
-                 time_step:int = 5, settling_time = 20, n:int = 5) -> None:
+    def __init__(self, IP_port:str, data_file_name:str, path_to_artifacts:str, path_to_LG:str, path_to_config_files:str,
+                 services:List[Dict], time_step:int = 5, settling_time = 20, n:int = 5) -> None:
         self.IP_port = IP_port
         self.artifacts = path_to_artifacts
+        self.path_to_config_files = path_to_config_files
         self.time_step = time_step
         self.settling_time = settling_time
-        self.path_to_save_data = path_to_save_data
+        self.data_file_name = data_file_name
         self.path_to_LG = path_to_LG
         self.services = services
         self.n = n
@@ -22,7 +23,7 @@ class DataCollection:
             line = ("max_l" + str(i) + "l" + str(i) + ",cl" + str(i) + ",p" + str(i) + ",b" + str(i) + ",c" + str(i) + ",d" + str(i) +
                     ",d" + str(i) + "_std,d" + str(i) + "1,d" + str(i) + "1_std,d" + str(i) + "2,d" + str(i) +
                     "2_std,drop," + str(i) + "\n")
-        with open(self.path_to_save_data, "w") as file:
+        with open(self.artifacts + self.data_file_name, "w") as file:
             file.write(line)
         file.close()
 
@@ -160,7 +161,7 @@ class DataCollection:
                 statistics = self.read_stats(self.services)
                 line = ""
                 for i in range(len(self.services)):
-                    line = (str(self.services[i]["max_l"]) + "," + str(offered_loads[i]) + "," + str(statistics[i]["cl"])
+                    line = (str(self.services[i]["l"]) + "," + str(offered_loads[i]) + "," + str(statistics[i]["cl"])
                             + "," + str(self.services[i]["p"])
                             + "," + str(self.services[i]["b"]) + "," + str(self.services[i]["c"]) + "," +
                             str(statistics[i]["d"]) + "," +  str(statistics[i]["d_std"]) + "," + str(statistics[i]["d1"])
@@ -179,7 +180,7 @@ class DataCollection:
             routing_weight = service["p"]
             blocking_rate = service["b"]
             scaling = service["c"]
-            command_runner = RunCommandsOnCluster()
+            command_runner = RunCommandsOnCluster(self.path_to_config_files)
             command_runner.set_routing_action(routing_weight)
             command_runner.set_scaling_action(scaling)
             command_runner.set_blocking_action(blocking_rate)
@@ -189,7 +190,10 @@ class DataCollection:
             command_runner.run_scaling_action()
             command_runner.run_blocking_action(self.IP_port, service["name"])
 
-    def data_collectio(self) -> None:
+    def data_collection(self) -> None:
         self.apply_service_config()
         time.sleep(self.settling_time)
         self.collect_samples()
+
+    def set_services(self, services) -> None:
+        self.services = services

@@ -9,14 +9,15 @@ class RunCommandsOnCluster:
     The class RunCommandsOnCluster includes all functions to revise the configuration files and run them on the cluster
     """
 
-    def __init__(self) -> None:
+    def __init__(self, path_to_config_files:str) -> None:
         """Initialize a RunCommandsOnCluster instance."""
         logging.info(f"Running command object is successfully generated!")
-        self.configurations_path = "../../cluster_configuration_files/"
+        self.configurations_path = path_to_config_files
         self.routing_file = "routing.yaml"
         self.scaling_file = "scaling.yaml"
         self.routing_action = 50
         self.scaling_action = 1000
+        # Blocking action is the upper limit, so it is (1-b)*l
         self.blocking_action = 0
 
     def set_routing_action(self, routing_action: int) -> None:
