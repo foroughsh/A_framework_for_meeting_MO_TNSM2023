@@ -4,6 +4,7 @@ import time
 import os
 from pathlib import Path
 from typing import List, Dict
+import logging
 from TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluster
 
 class DataCollection:
@@ -192,6 +193,7 @@ class DataCollection:
             command_runner.run_blocking_action(self.IP_port, service["name"])
 
     def data_collection(self) -> None:
+        logging.info("====" + "The config is " + str(self.services[0]) + "====")
         self.apply_service_config()
         time.sleep(self.settling_time)
         self.collect_samples()
