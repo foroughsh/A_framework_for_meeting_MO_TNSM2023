@@ -7,8 +7,7 @@ def generate_load() -> List[int]:
     load = []
     for i in range(100):
         l = random.randint(1,3)
-        for j in range(10):
-            load.append(l)
+        load.append(l)
     return load
 
 def save_load_in_file(file_name:str, load:List[int]) -> None:

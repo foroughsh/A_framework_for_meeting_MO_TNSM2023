@@ -44,7 +44,7 @@ if __name__ == "__main__":
         time.sleep(5)
         for l in load_cpu:
             service["l"] = l
-            data_collection.run_load_generator(service["name"], service["l"])
+            data_collection.run_load_generator(service["name"],l)
             for c in load_cpu:
                 service["c"] = c
                 for p in routing_blocking:
