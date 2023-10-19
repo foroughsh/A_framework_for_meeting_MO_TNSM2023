@@ -159,3 +159,5 @@ static
 package-lock.json
 
 #*.joblib
+
+.csv
