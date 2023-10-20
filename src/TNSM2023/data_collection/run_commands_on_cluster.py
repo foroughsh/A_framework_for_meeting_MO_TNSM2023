@@ -3,6 +3,7 @@ import fileinput
 import sys
 import subprocess
 import requests
+from typing import Tuple
 
 class RunCommandsOnCluster:
     """
@@ -136,21 +137,23 @@ class RunCommandsOnCluster:
         r = requests.get('http://' + IP_port + '/rate' + service_name +'/' + str(self.blocking_action))
         return r
 
-    def fetch_hap_replicas(self) -> int:
+    def fetch_hap_replicas(self) -> Tuple[float,float]:
         command = "kubectl get hpa"
 
         # Use subprocess to run the command
         result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-
+        second_line = result.stdout.split("\n")[1]
+        percentage = float(((' '.join(second_line.split())).split(" ")[2]).split("%/")[0])
+        hpa = float((' '.join(second_line.split())).split(" ")[5])
         # Check the result
         if result.returncode == 0:
-            logging.info(result.stdout)
-
-            return 0
+            logging.info("==== Replica is " + str(hpa) + " ====")
+            return (hpa, percentage)
         else:
             logging.info(result.stderr)
-            return 0
-# test = RunCommandsOnCluster(sys.argv[1])
+            return (-1, 0)
+test = RunCommandsOnCluster(sys.argv[1])
+test.fetch_hap_replicas()
 # test.set_scaling_action(1)
 # test.revise_scaling_action()
 # test.run_scaling_action()

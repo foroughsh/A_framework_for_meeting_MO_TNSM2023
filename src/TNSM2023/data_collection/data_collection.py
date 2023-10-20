@@ -187,7 +187,7 @@ class DataCollection:
                 time.sleep(self.time_step)
                 offered_loads = self.read_loads(self.services)
                 statistics = self.read_stats(self.services)
-                hpa = command_runner.fetch_hap_replicas()
+                (hpa, percentage) = command_runner.fetch_hap_replicas()
                 line = ""
                 for i in range(len(self.services)):
                     line = (str(self.services[i]["l"]) + "," + str(offered_loads[i]) + "," + str(statistics[i]["cl"])
@@ -195,7 +195,8 @@ class DataCollection:
                             + "," + str(self.services[i]["b"]) + "," + str(self.services[i]["c"]) + "," +
                             str(statistics[i]["d"]) + "," + str(statistics[i]["d_std"]) + "," + str(statistics[i]["d1"])
                             + "," + str(statistics[i]["d1_std"]) + "," + str(statistics[i]["d2"]) + "," +
-                            str(statistics[i]["d2_std"]) + "," + str(statistics[i]["drops"]) + "," + str(hpa) + "\n")
+                            str(statistics[i]["d2_std"]) + "," + str(statistics[i]["drops"]) + "," + str(hpa)
+                            + "," + str(percentage) + "\n")
                 file.write(line)
         file.close()
     def apply_service_config(self) -> None:
