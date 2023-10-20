@@ -136,6 +136,20 @@ class RunCommandsOnCluster:
         r = requests.get('http://' + IP_port + '/rate' + service_name +'/' + str(self.blocking_action))
         return r
 
+    def fetch_hap_replicas(self) -> int:
+        command = "kubectl get hpa"
+
+        # Use subprocess to run the command
+        result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+        # Check the result
+        if result.returncode == 0:
+            logging.info(result.stdout)
+
+            return 0
+        else:
+            logging.info(result.stderr)
+            return 0
 # test = RunCommandsOnCluster(sys.argv[1])
 # test.set_scaling_action(1)
 # test.revise_scaling_action()

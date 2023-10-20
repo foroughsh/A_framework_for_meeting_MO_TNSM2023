@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
     data_collection = DataCollection(IP_port=IP_port, data_file_name=data_file_name, path_to_artifacts=path_to_artifacts,
                                      path_to_LG=path_to_LG, path_to_config_files=path_to_config_file, services=services,
-                                     n=20)
+                                     n=10)
 
     load = read_load_from_file(path_to_artifacts + path_to_load)
 
@@ -56,7 +56,7 @@ if __name__ == "__main__":
         data_collection.set_services(services=[service])
         data_collection.run_load_generator(service["name"], l)
         time.sleep(data_collection.time_step)
-        data_collection.collect_samples()
+        data_collection.collect_samples_k8()
         data_collection.kill_load_generator()
 
 

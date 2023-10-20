@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     fig, ax1 = plt.subplots(1, 1, sharex=True, figsize=(fig_width, fig_hight))
 
-    ax1.plot(data["d1"], c="deepskyblue", label="response time")
+    ax1.plot(data["d1"], c="b", label="response time")
 
     # ax1.axvline(x=19, color='k', label='Change point', linestyle="--")
     # ax1.axhline(y=0.10, color='y', alpha=1.0, linestyle="--", label="$O_1$")
@@ -76,4 +76,6 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.savefig("data_after_heatmap.pdf")
     plt.show()
-    print(corr)
+    # print(corr)
+
+    print("The average response time is: ", data["d1"].mean())
