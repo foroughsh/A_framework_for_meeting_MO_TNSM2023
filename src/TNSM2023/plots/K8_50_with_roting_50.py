@@ -8,8 +8,7 @@ if __name__ == "__main__":
     args = sys.argv
     parser = argparse.ArgumentParser(description='Please check the code for options!')
     parser.add_argument("--path_to_artifacts", type=str, default="../../../artifacts/")
-    parser.add_argument("--data_file_name", type=str, default="data.csv")
-
+    parser.add_argument("--data_file_name", type=str, default="data_k8_sc1_50.csv")
 
     args = parser.parse_args()
 
@@ -17,8 +16,6 @@ if __name__ == "__main__":
     file_name = args.data_file_name
 
     data = pd.read_csv(path_to_artifacts + file_name)
-    data = data[data["max_l1"]<4]
-    data = data[data["d1"] < 1]
 
     fig_width = 7
     fig_hight = 3.6
@@ -28,6 +25,10 @@ if __name__ == "__main__":
     fig, ax1 = plt.subplots(1, 1, sharex=True, figsize=(fig_width, fig_hight))
 
     ax1.plot(data["d1"], c="b", label="response time")
+
+    ax2 = ax1.twinx()
+
+    ax2.plot(data["replica"], c="r", label="replicas")
 
     ax1.set_ylabel("Response \n time (sec)", fontsize=font_size)
     ax1.set_xlabel("Time index", fontsize=font_size)

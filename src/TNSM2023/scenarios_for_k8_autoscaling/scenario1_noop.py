@@ -15,7 +15,6 @@ def read_load_from_file(file_name:str) -> List[int]:
     return load
 
 if __name__ == "__main__":
-    args = sys.argv
     parser = argparse.ArgumentParser(description='Please check the code for options!')
     parser.add_argument("--path_to_artifacts", type=str, default="../../../artifacts/")
     parser.add_argument("--data_file_name", type=str, default="data_k8_sc1.csv")
@@ -56,7 +55,7 @@ if __name__ == "__main__":
         data_collection.set_services(services=[service])
         data_collection.run_load_generator(service["name"], l)
         time.sleep(2 * data_collection.settling_time)
-        data_collection.collect_samples_k8()
+        data_collection.collect_samples_noop()
         data_collection.kill_load_generator()
 
 

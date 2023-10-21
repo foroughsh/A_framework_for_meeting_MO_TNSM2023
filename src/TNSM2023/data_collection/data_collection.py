@@ -199,6 +199,33 @@ class DataCollection:
                             + "," + str(percentage) + "\n")
                 file.write(line)
         file.close()
+
+    def collect_samples_noop(self) -> None:
+        '''
+                This funtion collect n sample from the testbed for the given service and configration of that service
+                :param n: Number of samples
+                :param services: A list of dictionaries of name of the service and its configration, the configuratoin
+                includes p, b, c
+                :return: None
+                '''
+        with open(self.artifacts + self.data_file_name, "a") as file:
+            for i in range(self.n):
+                self.cleanup_files(self.services)
+                time.sleep(self.time_step)
+                offered_loads = self.read_loads(self.services)
+                statistics = self.read_stats(self.services)
+                line = ""
+                for i in range(len(self.services)):
+                    line = (str(self.services[i]["l"]) + "," + str(offered_loads[i]) + "," + str(statistics[i]["cl"])
+                            + "," + str(self.services[i]["p"])
+                            + "," + str(self.services[i]["b"]) + "," + str(self.services[i]["c"]) + "," +
+                            str(statistics[i]["d"]) + "," + str(statistics[i]["d_std"]) + "," + str(statistics[i]["d1"])
+                            + "," + str(statistics[i]["d1_std"]) + "," + str(statistics[i]["d2"]) + "," +
+                            str(statistics[i]["d2_std"]) + "," + str(statistics[i]["drops"]) + "\n")
+                file.write(line)
+        file.close()
+
+
     def apply_service_config(self) -> None:
         '''
         This function currently works only for one service since in the RunCommandsOnCluster paths are hard coded.

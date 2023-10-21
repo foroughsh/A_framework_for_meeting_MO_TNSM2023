@@ -152,8 +152,8 @@ class RunCommandsOnCluster:
         else:
             logging.info(result.stderr)
             return (-1, 0)
-test = RunCommandsOnCluster(sys.argv[1])
-test.fetch_hap_replicas()
+# test = RunCommandsOnCluster(sys.argv[1])
+# test.fetch_hap_replicas()
 # test.set_scaling_action(1)
 # test.revise_scaling_action()
 # test.run_scaling_action()
