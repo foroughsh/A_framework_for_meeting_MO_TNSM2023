@@ -38,14 +38,15 @@ if __name__ == "__main__":
                                          path_to_artifacts=path_to_artifacts, path_to_LG=path_to_LG,
                                          path_to_config_files=path_to_config_files, services=services)
 
-        load_cpu = range(1,6)
+        load = [4,8,12]
+        cpu = range(1,6)
         routing_blocking = [0, 0.2, 0.4, 0.6, 0.8, 1]
         data_collection.kill_load_generator()
         time.sleep(5)
-        for l in load_cpu:
+        for l in load:
             service["l"] = l
             data_collection.run_load_generator(service["name"],l)
-            for c in load_cpu:
+            for c in cpu:
                 service["c"] = c
                 for p in routing_blocking:
                     service["p"] = p * 100

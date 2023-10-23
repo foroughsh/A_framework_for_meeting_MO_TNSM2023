@@ -45,6 +45,7 @@ if __name__ == "__main__":
                                      path_to_LG=path_to_LG, path_to_config_files=path_to_config_file, services=services,
                                      n=10)
 
+    data_collection.kill_load_generator()
     load = read_load_from_file(path_to_artifacts + path_to_load)
 
     # data_collection.apply_service_config()
@@ -54,7 +55,7 @@ if __name__ == "__main__":
         service["l"] = l
         data_collection.set_services(services=[service])
         data_collection.run_load_generator(service["name"], l)
-        time.sleep(2 * data_collection.settling_time)
+        time.sleep(data_collection.settling_time)
         data_collection.collect_samples_noop()
         data_collection.kill_load_generator()
 

@@ -157,7 +157,7 @@ class DataCollection:
         '''
         with open(self.artifacts + self.data_file_name, "a") as file:
             for i in range(self.n):
-                self.cleanup_files(self.services)
+                self.clean_file_contents(self.services)
                 time.sleep(self.time_step)
                 offered_loads = self.read_loads(self.services)
                 statistics = self.read_stats(self.services)
@@ -183,7 +183,7 @@ class DataCollection:
         with open(self.artifacts + self.data_file_name, "a") as file:
             command_runner = RunCommandsOnCluster(self.path_to_config_files)
             for i in range(self.n):
-                self.cleanup_files(self.services)
+                self.clean_file_contents(self.services)
                 time.sleep(self.time_step)
                 offered_loads = self.read_loads(self.services)
                 statistics = self.read_stats(self.services)
@@ -210,7 +210,7 @@ class DataCollection:
                 '''
         with open(self.artifacts + self.data_file_name, "a") as file:
             for i in range(self.n):
-                self.cleanup_files(self.services)
+                self.clean_file_contents(self.services)
                 time.sleep(self.time_step)
                 offered_loads = self.read_loads(self.services)
                 statistics = self.read_stats(self.services)
@@ -222,6 +222,7 @@ class DataCollection:
                             str(statistics[i]["d"]) + "," + str(statistics[i]["d_std"]) + "," + str(statistics[i]["d1"])
                             + "," + str(statistics[i]["d1_std"]) + "," + str(statistics[i]["d2"]) + "," +
                             str(statistics[i]["d2_std"]) + "," + str(statistics[i]["drops"]) + "\n")
+                    print(line)
                 file.write(line)
         file.close()
 
@@ -254,3 +255,20 @@ class DataCollection:
 
     def set_services(self, services) -> None:
         self.services = services
+
+# service = dict()
+# service["name"] = "compute"
+# service["l"] = 4
+# service["p"] = 80
+# service["b"] = 1000
+# service["c"] = 1
+# services = [service]
+#
+# data_collection = DataCollection(IP_port="172.31.212.81:30048", data_file_name="test.csv", path_to_artifacts="../../../artifacts/",
+#                                      path_to_LG="./", path_to_config_files="../../../cluster_configuration_files", services=services,
+#                                      n=10)
+#
+# data_collection.run_load_generator("compute", service["l"])
+# time.sleep(5)
+# data_collection.collect_samples_noop()
+# data_collection.kill_load_generator()

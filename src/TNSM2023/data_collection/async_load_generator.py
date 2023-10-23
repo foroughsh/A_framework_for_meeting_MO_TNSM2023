@@ -10,7 +10,7 @@ import sys
 np.random.seed(0)
 
 def constant(load):
-    T = 7000
+    T = 7200
     delays = []
     interval = 1/load
     delay = interval
@@ -58,7 +58,7 @@ def random_constant_load():
 
 def poisson_modulated_by_f(name):
 
-    Time = 7200
+    Time = 1000
     t = 0
     k = 0
     intervals = []
