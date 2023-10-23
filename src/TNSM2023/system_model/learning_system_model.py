@@ -5,8 +5,10 @@ from sklearn.ensemble import RandomForestRegressor
 import joblib
 from typing import List
 import numpy as np
+
 class SystemModel:
-    def __int__(self, number_of_estimators:int, data_file_name:str, artifacts:str) -> None:
+
+    def __init__(self, number_of_estimators:int=120, data_file_name:str="data.csv", artifacts:str="../../../artifacts/") -> None:
         self.data_file_name = data_file_name
         self.artifacts = artifacts
         self.number_of_estimators = number_of_estimators
@@ -37,10 +39,10 @@ class SystemModel:
             df_test_ys_prediciton = pd.DataFrame([Y_test,predict_test])
             df_test_ys_prediciton.to_csv(self.artifacts + "test_predicitons.csv", index=False)
 
-        test_nmae, train_nmae, test_r2score, train_r2score = self.test_train_nmae_r2score(predict_test, predict_train,
+        test_nmae, train_nmae, test_r2score, train_r2score, avg_error = self.test_train_nmae_r2score(predict_test, predict_train,
                                                                                      Y_test,
                                                                                      Y_train)
-        return test_nmae, train_nmae, test_r2score, train_r2score
+        return test_nmae, train_nmae, test_r2score, train_r2score, avg_error
 
     def test_train_nmae_r2score(self, test_predicted_values, train_predicted_values, test_set, train_set):
         col_size = train_set.shape[1]
@@ -48,6 +50,7 @@ class SystemModel:
         train_names = []
         test_r2s = []
         train_r2s = []
+        avg_erro = []
         for i in range(col_size):
             diff_test = np.abs(test_predicted_values[:, i] - test_set.iloc[:, i])
             test_nmae = (diff_test.mean()) / test_set.iloc[:, i].mean()
@@ -59,8 +62,8 @@ class SystemModel:
             train_names.append(train_nmae)
             test_r2s.append(test_r2score)
             train_r2s.append(train_r2score)
-            print("avg diff: ", diff_test.mean())
-        return test_nmaes, train_names, test_r2s, train_r2s
+            avg_erro.append(test_nmae * test_set.iloc[:, i].mean())
+        return test_nmaes, train_names, test_r2s, train_r2s, avg_erro
 
     def save_model(self, target_file_name):
         joblib.dump(self.model, self.artifacts + target_file_name + ".joblib")
@@ -71,6 +74,4 @@ class SystemModel:
     # def generate_predicitons_using_the_model(self, controls:List[List[float]], file_name) -> None:
     #     for control in controls:
     #         for value in control:
-
-
 
