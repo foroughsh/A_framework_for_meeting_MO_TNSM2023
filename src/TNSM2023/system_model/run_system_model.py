@@ -4,7 +4,6 @@ import logging
 from TNSM2023.system_model.learning_system_model import SystemModel
 
 
-# number_of_estimators:int, data_file_name:str, artifacts:str
 if __name__ == "__main__":
     args = sys.argv
 
