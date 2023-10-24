@@ -1,6 +1,7 @@
 import random
 from typing import Tuple
 import gym
+import gymnasium
 import numpy as np
 from TNSM2023.learn_ppo_policy.environment.routing_middle_ware import RoutingMiddleWare
 from typing import List
@@ -77,7 +78,7 @@ class RoutingEnv(gym.Env):
         self.d1 = d1
 
         self.s = state
-        return np.array([self.l1, self.p1])
+        return np.array([self.l1])
 
     def reward_function(self):
         d1 = round(self.d1, 3)
