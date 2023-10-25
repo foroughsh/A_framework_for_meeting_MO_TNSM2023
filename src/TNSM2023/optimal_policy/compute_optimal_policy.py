@@ -31,7 +31,7 @@ if __name__ == "__main__":
     delay_models = joblib.load(system_model_path)
 
     with open(artifacts + file_name, "w") as file:
-        file.write("l,p,c,d\n")
+        file.write("l,r,p,c,d\n")
         for l in [4, 8, 12]:
             max_reward = -1000
             best_p = 0
