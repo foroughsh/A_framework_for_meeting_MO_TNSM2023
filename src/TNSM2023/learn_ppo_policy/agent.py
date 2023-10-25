@@ -3,9 +3,8 @@ import numpy as np
 from TNSM2023.learn_ppo_policy.environment.routing_env import RoutingEnv
 
 if __name__ == '__main__':
-    env = gym.make("routing-env-v2")
+    env = gym.make("routing-env-v2", path_to_system_model="system_model.joblib", path_to_artifacts="../../../artifacts/")
     s = env.reset()
-    s = env.reset_to_specific_state(1,1,2000,2000)
     done = False
     t = 0
     print(s)

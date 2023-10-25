@@ -39,9 +39,11 @@ class RoutingMiddleWare():
     def read_state_from_system(self, action):
         action = np.array(action)
         action = np.squeeze(action)
-        self.p1 = round(action[0] / 5, 1)
+        print("Action is: ")
+        self.p1 = round(action[0] / 5, 1) * 100
         self.c1 = action[1] + 1
         self.b1 = 0
+        print("The routing weight and scaling actions are: ", self.p1, self.c1)
 
         self.cl1 = round(self.l1 * (1 - self.b1), 1)
 

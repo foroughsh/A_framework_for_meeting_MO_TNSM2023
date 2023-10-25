@@ -56,45 +56,27 @@ class CustomCallback(BaseCallback):
         print(f"Training iteration: {self.iter}")
         if self.iter % self.eval_every == 0:
             s = self.training_env.reset()
-            N = 1
-            max_horizon = 100
-            avg_rewards = []
-            avg_optimal_rewards = []
-            state_actions = []
-            for i in range(N):
-                done = False
-                t = 0
-                rewards = []
-                optimal_rewards = []
-                while not done and t <= max_horizon:
-                    # a=self.model.policy.action
-                    a, _ = model.predict(s, deterministic=True)
-                    state_actions.append((s, a))
-                    with open("state_actions.txt",'a') as file:
-                        line = str(s) + ":" + str(a)+ "\n"
-                        file.write(line)
-                    file.close()
-                    s, r, done, info = env.step(a)
-                    opt_r = optimal[s[0]]
-                    with open("rewards.txt",'a') as file:
-                        line = str(r)+ "\n"
-                        file.write(line)
-                    file.close()
-                    rewards.append(r)
-                    optimal_rewards.append(opt_r)
-                    t+= 1
-                # print(f"R:{R},actions: {actions}, states: {states}")
-                avg_rewards.append(np.mean(rewards))
-                avg_optimal_rewards.append(np.mean(optimal_rewards))
-            avg_R = np.mean(avg_rewards)
-            std_R = np.std(avg_rewards)
-            avg_optimal_R = np.mean(avg_optimal_rewards)
-            (lower, upper) = st.t.interval(alpha=0.95, df=len(avg_rewards) - 1, loc=np.mean(avg_rewards), scale=st.sem(avg_rewards))
-            with open(f"avg_reward_{self.seed}.txt", 'a') as file:
-                line = str(avg_R) + ":" + str(std_R) + ":" + str(avg_optimal_R) + "\n"
+            max_horizon = 10
+            done = False
+            t = 0
+            rewards = []
+            optimal_rewards = []
+            while not done and t <= max_horizon:
+                a, _ = model.predict(s, deterministic=True)
+                s, r, done, info = env.step(a)
+                opt_r = optimal[s[0]]
+                rewards.append(r)
+                optimal_rewards.append(opt_r)
+                t+= 1
+            avg_R = np.mean(rewards)
+            std_R = np.std(rewards)
+            avg_optimal_R = np.mean(optimal_rewards)
+            (lower, upper) = st.t.interval(alpha=0.95, df=len(rewards) - 1, loc=np.mean(rewards), scale=st.sem(rewards))
+            with open(f"avg_reward_{self.seed}.csv", 'a') as file:
+                line = str(avg_R) + "," + str(std_R) + "," + str(lower) + "," + str(upper) + "," + str(avg_optimal_R) + "\n"
                 file.write(line)
             file.close()
-            print(f"[EVAL] Training iteration: {self.iter}, Average R:{avg_R},\n list of (load, action): {state_actions}")
+            print(f"[EVAL] Training iteration: {self.iter}, Average R:{avg_R}")
             self.training_env.reset()
             model.save("self_routing_" + str(self.iter))
         self.iter += 1
@@ -111,13 +93,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Please check the code for options!')
     parser.add_argument("--artifacts", type=str, default="../../../artifacts/")
     parser.add_argument("--system_model", type=str, default="system_model.joblib")
+    parser.add_argument("--optimal_policy", type=str, default="optimal_policy.csv")
 
     args = parser.parse_args()
 
     artifacts = args.artifacts
     system_model = args.system_model
+    optimal_policy = args.optimal_policy
 
-    optimal_rewards = pd.read_csv(artifacts + "optimal.csv")
+    optimal_rewards = pd.read_csv(artifacts + optimal_policy)
     optimal = dict()
     for i in range(optimal_rewards.shape[0]):
         optimal[optimal_rewards["l"].iloc[i]] = optimal_rewards["r"].iloc[i]
@@ -126,18 +110,18 @@ if __name__ == '__main__':
     env = Monitor(env)
 
     # Hparams
-    num_neurons_per_hidden_layer = 128
+    num_neurons_per_hidden_layer = 64
     num_layers = 3
     policy_kwargs = dict(net_arch=[num_neurons_per_hidden_layer] * num_layers)
-    steps_between_updates = 1024  # 512#128
+    steps_between_updates = 512  # 512#128
     learning_rate = 0.0005
     batch_size = 64
     device = "cpu"
-    gamma = 0.99
+    gamma = 0
     num_training_timesteps = int(50000)
     verbose = 0
-    ent_coef = 0.05
-    clip_range = 0.2
+    # ent_coef = 0.05
+    # clip_range = 0.2
 
     # Set seed for reproducibility
     seed = 999
@@ -145,7 +129,12 @@ if __name__ == '__main__':
     np.random.seed(seed)
     torch.manual_seed(seed)
 
-    cb = CustomCallback(seed=seed, eval_every=10)
+    # Creating file for the outputs.
+    with open(f"avg_reward_{seed}.csv", "w") as file:
+        file.write("avg_r,std_r,lower_r,upper_r,avg_optimal_r\n")
+    file.close()
+
+    cb = CustomCallback(seed=seed, eval_every=2)
 
     # Train
     model = PPO("MlpPolicy", env, verbose=verbose,

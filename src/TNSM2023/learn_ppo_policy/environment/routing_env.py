@@ -81,10 +81,10 @@ class RoutingEnv(gym.Env):
         return np.array([self.l1])
 
     def reward_function(self):
-        d1 = round(self.d1, 3)
+        d1 = round(self.d1, 3) + 0.6
         reward = 0
         if (d1 <= self.O1):
-            reward = 2 - self.c1/5
+            reward = 6 - self.c1
         else:
             if (d1 > self.O1):
                 reward = self.O1 - d1
