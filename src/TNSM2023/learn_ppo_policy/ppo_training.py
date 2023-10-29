@@ -18,11 +18,12 @@ class CustomCallback(BaseCallback):
 
     :param verbose: (int) Verbosity level 0: not output 1: info 2: debug
     """
-    def __init__(self, seed: int, verbose=0, eval_every: int = 200):
+    def __init__(self, seed: int, verbose=0, eval_every: int = 200, artifacts:str="../../../artifacts/"):
         super(CustomCallback, self).__init__(verbose)
         self.iter = 0
         self.eval_every = eval_every
         self.seed = seed
+        self.artifacts = artifacts
 
     def _on_training_start(self) -> None:
         """
@@ -63,7 +64,9 @@ class CustomCallback(BaseCallback):
             optimal_rewards = []
             while not done and t <= max_horizon:
                 a, _ = model.predict(s, deterministic=True)
+                print("The state, action:", s, a)
                 s, r, done, info = env.step(a)
+                print("The reward:",r)
                 opt_r = optimal[s[0]]
                 rewards.append(r)
                 optimal_rewards.append(opt_r)
@@ -72,13 +75,13 @@ class CustomCallback(BaseCallback):
             std_R = np.std(rewards)
             avg_optimal_R = np.mean(optimal_rewards)
             (lower, upper) = st.t.interval(alpha=0.95, df=len(rewards) - 1, loc=np.mean(rewards), scale=st.sem(rewards))
-            with open(f"avg_reward_{self.seed}.csv", 'a') as file:
+            with open(self.artifacts + f"avg_reward_{self.seed}.csv", 'a') as file:
                 line = str(avg_R) + "," + str(std_R) + "," + str(lower) + "," + str(upper) + "," + str(avg_optimal_R) + "\n"
                 file.write(line)
             file.close()
             print(f"[EVAL] Training iteration: {self.iter}, Average R:{avg_R}")
             self.training_env.reset()
-            model.save("self_routing_" + str(self.iter))
+            model.save(self.artifacts + "self_routing_" + str(self.iter))
         self.iter += 1
 
     def _on_training_end(self) -> None:
@@ -111,14 +114,14 @@ if __name__ == '__main__':
 
     # Hparams
     num_neurons_per_hidden_layer = 64
-    num_layers = 3
+    num_layers = 4
     policy_kwargs = dict(net_arch=[num_neurons_per_hidden_layer] * num_layers)
-    steps_between_updates = 512  # 512#128
-    learning_rate = 0.0005
+    steps_between_updates = 1024  # 512#128
+    learning_rate = 0.0001
     batch_size = 64
     device = "cpu"
-    gamma = 0
-    num_training_timesteps = int(50000)
+    gamma = 0#0.99
+    num_training_timesteps = int(1000000)
     verbose = 0
     # ent_coef = 0.05
     # clip_range = 0.2
@@ -130,11 +133,11 @@ if __name__ == '__main__':
     torch.manual_seed(seed)
 
     # Creating file for the outputs.
-    with open(f"avg_reward_{seed}.csv", "w") as file:
+    with open(artifacts + f"avg_reward_{seed}.csv", "w") as file:
         file.write("avg_r,std_r,lower_r,upper_r,avg_optimal_r\n")
     file.close()
 
-    cb = CustomCallback(seed=seed, eval_every=2)
+    cb = CustomCallback(seed=seed, eval_every=2, artifacts=artifacts)
 
     # Train
     model = PPO("MlpPolicy", env, verbose=verbose,

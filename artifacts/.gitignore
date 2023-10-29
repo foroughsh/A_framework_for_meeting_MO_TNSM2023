@@ -160,4 +160,6 @@ package-lock.json
 
 #*.joblib
 
-.csv
+*.csv
+
+*.joblib

@@ -3,7 +3,8 @@ from typing import Tuple
 import gym
 import gymnasium
 import numpy as np
-from TNSM2023.learn_ppo_policy.environment.routing_middle_ware import RoutingMiddleWare
+from TNSM2023.learn_ppo_policy.environment.routing_middleware_on_testbed import RoutingMiddleWare
+# from TNSM2023.learn_ppo_policy.environment.routing_middle_ware import RoutingMiddleWare
 from typing import List
 
 class RoutingEnv(gym.Env):
@@ -57,8 +58,6 @@ class RoutingEnv(gym.Env):
         self.s = next_state
 
         info["r"] = reward
-        # if self.t > 10:
-        #     done = True
         self.t += 1
 
         return np.array([self.l1]), reward, done, info
@@ -81,7 +80,7 @@ class RoutingEnv(gym.Env):
         return np.array([self.l1])
 
     def reward_function(self):
-        d1 = round(self.d1, 3) + 0.6
+        d1 = round(self.d1, 3) + 0.4
         reward = 0
         if (d1 <= self.O1):
             reward = 6 - self.c1

@@ -3,6 +3,8 @@ import numpy as np
 import joblib
 from typing import List
 
+import pandas as pd
+
 
 class RoutingMiddleWare():
 
@@ -31,7 +33,8 @@ class RoutingMiddleWare():
         self.system_model_path = artifacts + system_model_name
         self.delay_models = joblib.load(self.system_model_path)
 
-        self.load = [4,8,12]
+        # self.load = [4,8,12]
+        self.load = np.array(pd.read_csv(artifacts + "random_load.csv")["l"])
 
     def get_state(self) -> np.ndarray:
         return self.state
@@ -39,19 +42,20 @@ class RoutingMiddleWare():
     def read_state_from_system(self, action):
         action = np.array(action)
         action = np.squeeze(action)
-        print("Action is: ")
+        # print("Action is: ")
         self.p1 = round(action[0] / 5, 1) * 100
         self.c1 = action[1] + 1
         self.b1 = 0
-        print("The routing weight and scaling actions are: ", self.p1, self.c1)
+        # print("The routing weight and scaling actions are: ", self.p1, self.c1)
 
         self.cl1 = round(self.l1 * (1 - self.b1), 1)
 
         # Feature list in the system model: ["max_l1", "l1", "cl1", "p1", "b1", "c1"]
         [self.d1] = self.delay_models.predict([[self.l1, self.l1 * 5, self.l1 * 5, self.p1, self.l1, self.c1]])
 
-        if (self.LD_counter % 2 == 0):
-            self.l1 = self.load[random.randint(0, len(self.load) - 1)]
+        # if (self.LD_counter % 2 == 0):
+        #     self.l1 = self.load[random.randint(0, len(self.load) - 1)]
+        self.l1 = self.load[self.LD_counter]
 
         self.state[0] = self.l1
 

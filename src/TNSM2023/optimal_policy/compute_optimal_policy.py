@@ -3,7 +3,7 @@ import argparse
 import joblib
 
 def reward_function(d1:float, c:int, O1:float=1):
-    d1 = round(d1, 3) + 0.6
+    d1 = round(d1, 3) + 0.4
     reward = 0
     if (d1 <= O1):
         reward = 6 - c
