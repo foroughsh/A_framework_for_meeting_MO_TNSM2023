@@ -29,25 +29,6 @@ The following figure shows our approach for policy adaptation in networked syste
 - `flake8` (for linting)
 - `tox` (for automated testing)
 
-
-## Run Experiments
-
-### Scenario 1
-
-```bash
-cd examples; python run_scenario_1.py
-```
-
-### Scenario 2
-```bash
-cd examples; python run_scenario_2.py
-```
-
-### Scenario 3
-```bash
-cd examples; python run_scenario_3.py
-```
-
 ## Copyright and license
 
 <p>
