@@ -81,7 +81,7 @@ The main reason is that during the settling time, the response time is not stabl
 <img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/images/settling_time.png" width="500"/>
 </p>
 
-## Commands to run
+## Running data collection script
 To gather data, execute the file located at the following path: src/TNSM2023/data_collection/run_data_collection.py. 
 
 Within this file, you will define the service name intended for operation on the testbed, set the load range, and specify the data collection method (either grid or random search).
