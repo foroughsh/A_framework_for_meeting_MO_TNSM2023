@@ -2,7 +2,7 @@ import sys
 import argparse
 import time
 from typing import List
-from TNSM2023.data_collection.data_collection import DataCollection
+from A_framework_for_meeting_MO_TNSM2023.data_collection.data_collection import DataCollection
 
 def read_load_from_file(file_name:str) -> List[int]:
     load = []

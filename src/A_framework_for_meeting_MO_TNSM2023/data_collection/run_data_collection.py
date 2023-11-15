@@ -3,7 +3,7 @@ import argparse
 import time
 
 import math
-from TNSM2023.data_collection.data_collection import DataCollection
+from A_framework_for_meeting_MO_TNSM2023.data_collection.data_collection import DataCollection
 
 if __name__ == "__main__":
     args = sys.argv

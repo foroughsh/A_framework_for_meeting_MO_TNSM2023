@@ -1,7 +1,7 @@
 import sys
 import argparse
 import logging
-from TNSM2023.system_model.learning_system_model import SystemModel
+from A_framework_for_meeting_MO_TNSM2023.system_model.learning_system_model import SystemModel
 
 
 if __name__ == "__main__":

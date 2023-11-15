@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 from typing import List, Dict
 import logging
-from TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluster
+from A_framework_for_meeting_MO_TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluster
 
 class DataCollection:
     def __init__(self, IP_port:str, data_file_name:str, path_to_artifacts:str, path_to_LG:str, path_to_config_files:str,

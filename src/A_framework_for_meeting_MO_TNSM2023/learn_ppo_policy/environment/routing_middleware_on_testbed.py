@@ -3,7 +3,7 @@ import time
 
 import numpy as np
 import joblib
-from TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluster
+from A_framework_for_meeting_MO_TNSM2023.data_collection.run_commands_on_cluster import RunCommandsOnCluster
 
 import pandas as pd
 

@@ -1,13 +1,13 @@
 import time
 from typing import List
-from TNSM2023.data_collection.data_collection import DataCollection
+from A_framework_for_meeting_MO_TNSM2023.data_collection.data_collection import DataCollection
 import argparse
 from stable_baselines3 import PPO
 from stable_baselines3.common.monitor import Monitor
 import gym
 import pandas as pd
 import numpy as np
-from TNSM2023.learn_ppo_policy.environment.routing_env import RoutingEnv
+from A_framework_for_meeting_MO_TNSM2023.learn_ppo_policy.environment.routing_env import RoutingEnv
 
 def read_load_from_file(file_name:str) -> List[int]:
     load = []

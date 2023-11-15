@@ -1,6 +1,6 @@
 import gym
 import numpy as np
-from TNSM2023.learn_ppo_policy.environment.routing_env import RoutingEnv
+from A_framework_for_meeting_MO_TNSM2023.learn_ppo_policy.environment.routing_env import RoutingEnv
 
 if __name__ == '__main__':
     env = gym.make("routing-env-v2", path_to_system_model="system_model.joblib", path_to_artifacts="../../../artifacts/")
