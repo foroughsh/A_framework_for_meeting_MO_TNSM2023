@@ -51,10 +51,9 @@ cd examples; python run_scenario_3.py
 ## Copyright and license
 
 <p>
-<a href="./LICENSE.md">Creative Commons (C) 2023-2024, Forough Shahabsamani, and Kim Hammar</a>
+<a href="./LICENSE.md">Creative Commons (C) 2023-2024, Forough Shahabsamani</a>
 </p>
 
 ## Authors & Maintainers
 
 - Forough Shahabsamani <foro@kth.se>
-- Kim Hammar <kimham@kth.se>
