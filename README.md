@@ -30,25 +30,6 @@ The following figure shows our approach for policy adaptation in networked syste
 - `tox` (for automated testing)
 
 
-## Installation
-
-```bash
-# install from pip
-pip install online_policy_adaptation_using_rollout==<version>
-# local install from source
-$ pip install -e online_policy_adaptation_using_rollout
-# or (equivalently):
-make install
-# force upgrade deps
-$ pip install -e online_policy_adaptation_using_rollout --upgrade
-# git clone and install from source
-git clone https://github.com/foroughsh/online_policy_adaptation_using_rollout
-cd online_policy_adaptation_using_rollout
-pip3 install -e .
-# Install development dependencies
-$ pip install -r requirements_dev.txt
-```
-
 ## Run Experiments
 
 ### Scenario 1
