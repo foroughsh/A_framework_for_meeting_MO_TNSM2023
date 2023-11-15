@@ -83,4 +83,4 @@ The main reason is that during the settling time, the response time is not stabl
 
 ## Commands to run
 To collect data, we run the file in the following path: src/TNSM2023/data_collection/run_data_collection.py 
-This file 
+In this file, we specify name of the service to run on the testbed, the range for load, and how to collect data (grid or random search). 
