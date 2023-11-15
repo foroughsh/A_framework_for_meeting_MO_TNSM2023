@@ -46,7 +46,7 @@ a^{(c)}_{j,t} \in \{-\Delta_c,0,\Delta_c\}
 ```
 indicates the change in allocated CPU cores for node $j$.
 
-Currently, the sequestional action set is not merged in this code. It can be accessed through the code presented in the following repository:
+Currently, the sequestional action set is not merged in the current repository. It can be accessed through the code presented in the following repository:
 https://github.com/foroughsh/online_policy_adaptation_using_rollout
 
 Given (\ref{eq:action_def}), the system model (\ref{eq:dynamics_def}) can be stated more explicitly as
