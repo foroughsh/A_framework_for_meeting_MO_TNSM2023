@@ -80,3 +80,7 @@ The main reason is that during the settling time, the response time is not stabl
 <p align="center">
 <img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/images/settling_time.png" width="500"/>
 </p>
+
+## Commands to run
+To collect data, we run the file in the following path: src/TNSM2023/data_collection/run_data_collection.py 
+This file 
