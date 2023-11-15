@@ -26,7 +26,7 @@ a^{(c)}_{j,t} \in \{0, \Delta_c, 2\Delta_c\, ...\}
 ```
 indicates the change in allocated CPU cores for node $j$.
 
-We can also, take sequential actions defined as:
+We can also, take sequential actions (multi-step actions) defined as:
 
 ```math
 a_t \triangleq ((a^{(p)}_{(j,k),i,t}, a^{(b)}_{i,t}, a^{(c)}_{j,t}))_{i \in \mathscr{S}, (j,k) \in \mathcal{E}, k,j \in \mathcal{V}}
@@ -45,6 +45,9 @@ indicates the change in blocking rate for service $S_i$, and
 a^{(c)}_{j,t} \in \{-\Delta_c,0,\Delta_c\} 
 ```
 indicates the change in allocated CPU cores for node $j$.
+
+Currently, the sequestional action set is not merged in this code. It can be accessed through the code presented in the following repository:
+https://github.com/foroughsh/online_policy_adaptation_using_rollout
 
 Given (\ref{eq:action_def}), the system model (\ref{eq:dynamics_def}) can be stated more explicitly as
 
