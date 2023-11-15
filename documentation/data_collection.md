@@ -14,15 +14,15 @@ a_t \triangleq ((a^{(p)}_{(j,k),i,t}, a^{(b)}_{i,t}, a^{(c)}_{j,t}))_{i \in \mat
 
 where 
 ```math
-a^{(p)}_{(j,k),i,t} \in \{-\Delta_p, 0, \Delta_p\}
+a^{(p)}_{(j,k),i,t} \in \{-\Delta_p, 0, \Delta_p\} or a^{(p)}_{(j,k),i,t} \in \{0, \Delta_p, 2\Delta_p\, ...}
 ```
 indicates the change in routing weight for edge $(j,k)$ and service $S_i$, 
 ```math
-a^{(b)}_{i,t} \in \{-\Delta_b, 0, \Delta_b\}
+a^{(b)}_{i,t} \in \{-\Delta_b, 0, \Delta_b\} or a^{(b)}_{i,t} \in \{0, \Delta_b, 2\Delta_b\, ...}
 ```
 indicates the change in blocking rate for service $S_i$, and 
 ```math
-a^{(c)}_{j,t} \in \{-\Delta_c,0,\Delta_c\}
+a^{(c)}_{j,t} \in \{-\Delta_c,0,\Delta_c\} or a^{(c)}_{j,t} \in \{0, \Delta_c, 2\Delta_c\, ...}
 ```
 indicates the change in allocated CPU cores for node $j$.
 
