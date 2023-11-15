@@ -2,9 +2,11 @@
 
 ![version](https://img.shields.io/badge/version-1.0.0-blue) ![license](https://img.shields.io/badge/license-CC%20BY--SA%204.0-green) [![PyPI version](https://badge.fury.io/py/online-policy-adaptation-using-rollout.svg)](https://badge.fury.io/py/online-policy-adaptation-using-rollout) ![PyPI - Downloads](https://img.shields.io/pypi/dm/online-policy-adaptation-using-rollout)
 
-Dynamic resource allocation in networked systems is necessary to achieve end-to-end management objectives. Previous research has demonstrated that reinforcement learning is a promising approach to this problem, allowing to obtain near-optimal resource allocation policies for non-trivial system configurations. Despite these advances, a significant drawback of current approaches is that they require expensive and slow retraining whenever the target system changes. We address this drawback and introduce an efficient approach to adapt a given base policy to dynamic system changes. In our approach, we adapt the base policy through rollout and online play, which transforms the base policy into a rollout policy. 
+We introduce a comprehensive framework designed to achieve end-to-end management objectives for multiple services concurrently operating within a service mesh. Leveraging reinforcement learning (RL) techniques, our framework trains an agent to periodically execute control actions for resource reallocation. Our development and evaluation take place within a laboratory testbed where information and computing services run on a service mesh supported by Istio and Kubernetes platforms.
 
-The following figure shows our approach for policy adaptation in networked systems. During each control cycle, the system model $f$ is estimated from system metrics using supervised learning; a given base policy $\hat{\pi}$ is adapted for the current state and the current system model through one step of policy iteration, which we call rollout and the output of this step is an improved rollout policy $\tilde{\pi}$ which is used to select the next control action.
+Our investigation encompasses various management objectives, including enforcing end-to-end delay bounds on service requests, optimizing throughput, managing cost-related objectives, and implementing service differentiation. Notably, we compute control policies on a simulator instead of the testbed, significantly expediting the training process for the scenarios under study.
+
+Distinguishing itself by advocating a top-down approach, our framework prioritizes the definition of management objectives before mapping them onto available control actions. This approach enables the concurrent execution of multiple control actions and facilitates training the agent for diverse management objectives in parallel by initially learning the system model and operating region from testbed traces.
 
 <p align="center">
 <img src="https://github.com/foroughsh/TNSM2023/blob/master/framework_all_components%20(5).png" width="500"/>
@@ -28,25 +30,6 @@ The following figure shows our approach for policy adaptation in networked syste
 - Python 3.7+
 - `flake8` (for linting)
 - `tox` (for automated testing)
-
-
-## Run Experiments
-
-### Scenario 1
-
-```bash
-cd examples; python run_scenario_1.py
-```
-
-### Scenario 2
-```bash
-cd examples; python run_scenario_2.py
-```
-
-### Scenario 3
-```bash
-cd examples; python run_scenario_3.py
-```
 
 ## Copyright and license
 

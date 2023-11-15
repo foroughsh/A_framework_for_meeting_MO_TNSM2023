@@ -80,3 +80,16 @@ The main reason is that during the settling time, the response time is not stabl
 <p align="center">
 <img src="https://github.com/foroughsh/online_policy_adaptation_using_rollout/blob/main/documentation/images/settling_time.png" width="500"/>
 </p>
+
+## Running data collection script
+To gather data, execute the file located at the following path: src/TNSM2023/data_collection/run_data_collection.py. 
+
+Within this file, you will define the service name intended for operation on the testbed, set the load range, and specify the data collection method (either grid or random search).
+
+Below is the list of input arguments for this file:
+
+* --IP_port: This argument represents the IP address and port of the services operational on the testbed. Multiple ports and IPs can be defined in a list format, such as x.x.x.x:yyyy (not implemented in this file and version).
+* --path_to_artifacts: This argument denotes the directory containing all output files.
+* --path_to_data_file: Use this argument to specify the filename for storing data.
+* --path_to_LG: This argument requires the path to the load generator.
+* --path_to_config_files: This argument indicates the path to the .yaml configuration files.
