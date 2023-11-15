@@ -34,7 +34,7 @@ Distinguishing itself by advocating a top-down approach, our framework prioritiz
 ## Copyright and license
 
 <p>
-<a href="./LICENSE.md">Creative Commons (C) 2023-2024, Forough Shahabsamani</a>
+<a href="./LICENSE.md">Creative Commons (C) 2021-2024, Forough Shahabsamani</a>
 </p>
 
 ## Authors & Maintainers
